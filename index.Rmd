@@ -1,0 +1,364 @@
+---
+title: "AFDMD-111 Estadística"
+author: "Jorge Isaac Dominguez Perez"
+date: "09/10/2023"
+output:
+  rmdformats::readthedown:
+    highlight: kate
+    cards: no
+subtitle: Distribuciones de probabilidad
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Distribuciones discretas de probabilidad
+
+Las distribuciones probabilidad se pueden clasificar en dos tipos importantes:
+
+- Distribuciones discretas.
+- Distribuciones continuas.
+
+
+### Distribución de Bernoulli
+
+Entre las distribuciones de probabilidad discretas podemos mencionar a la distribución de Bernoulli, la cual tiene la siguiente forma matemática:
+
+$$
+p(k) = p^k(1-p)^{1-k}, \; \mbox{para} \; k\in (0,1)
+$$
+
+
+En `R`, podemos simular muestras de la distribución de Bernoulli mediante el comando:
+
+```{r}
+# Sacamos una muestra de 30 datos Bernoulli y graficamos
+datos <- rbinom(n=30, size=1, prob=0.3)
+plot(datos, type="h", main="Datos de dist de Bernoulli")
+points(datos)
+```
+En este caso size representa a $n$ que es igual a $1$. Otra distribución discreta importante es la Binomial (la de Bernoulli es un caso especial de ésta).
+
+### Distribución Binomial
+
+La distribución binomial representa el número de éxitos en $n$ intentos, mientras que la de Bernoulli, representa éxito o fracaso, la fórmula que representa a la distribución Binomial está dada por:
+
+$$
+Pr(X=k) = {n\choose k} p^k(1-p)^{n-k}
+$$
+En `R` podemos simular a la distribución Binomial como:
+```{r binomial}
+datos <- rbinom(30, size=20, prob=0.6)
+plot(datos, type="h", main= "Distribución binomial")
+points(datos)
+```
+y si hacemos la probabilidad más pequeña ($p=0.1$), tenemos;
+
+```{r binomial2}
+datos <- rbinom(30, size=20, prob=0.1)
+plot(datos, type="h", main= "Distribución binomial")
+points(datos)
+```
+
+### Tarea
+
+Investigar las siguiente distribuciones discretas y verificar cómo se pueden generar en `R` (Nota: no es necesario generarlos en `R`, es opcional).
+
+- Distribución de Poison.
+- Distribución Geométrica.
+- Distribución Uniforme discreta.
+- Distribución Hipergeométrica.
+
+## Distribusion de Poison
+
+La distribución de Poisson es una distribución de probabilidad discreta que modela el número de eventos que ocurren en un intervalo fijo de tiempo o espacio, bajo la suposición de que estos eventos ocurren con una tasa constante y de manera independiente. En R Studio, puedes utilizar funciones específicas para trabajar con la distribución de Poisson.
+
+En R para la distribución de Poisson es dpois(), y se utiliza para calcular la función de masa de probabilidad (PMF). Además, puedes usar ppois() para calcular la función de distribución acumulativa (CDF), rpois() para generar números aleatorios que sigan una distribución de Poisson y qpois() para obtener los cuantiles. Por ejemplo.
+
+```{r}
+# Parámetros de la distribución de Poisson
+tasa_promedio <- 2  # Tasa promedio de ocurrencia de eventos
+num_eventos <- 3    # Número de eventos que queremos modelar
+
+# PMF: Probabilidad de que ocurran num_eventos eventos
+probabilidad <- dpois(num_eventos, lambda = tasa_promedio)
+
+# CDF: Probabilidad acumulativa de que ocurran hasta num_eventos eventos
+prob_acumulativa <- ppois(num_eventos, lambda = tasa_promedio)
+
+# Generar números aleatorios que sigan una distribución de Poisson
+num_aleatorios <- rpois(n = 5, lambda = tasa_promedio)
+
+# Calcular cuantiles de la distribución de Poisson
+cuantil_95 <- qpois(0.95, lambda = tasa_promedio)
+
+# Imprimir resultados
+cat("Probabilidad de", num_eventos, "eventos:", probabilidad, "\n")
+cat("Probabilidad acumulativa hasta", num_eventos, "eventos:", prob_acumulativa, "\n")
+cat("Números aleatorios generados:", num_aleatorios, "\n")
+cat("Cuantil al 95%:", cuantil_95, "\n")
+
+```
+
+## Distribución Geométrica.
+
+la distribución geométrica modela el número de ensayos o experimentos independientes necesarios para obtener el primer éxito en una secuencia de ensayos de Bernoulli, donde cada ensayo tiene dos posibles resultados: éxito o fracaso. La distribución geométrica tiene un parámetro de probabilidad p, que es la probabilidad de éxito en cada ensayo.
+
+En R Studio, puedes usar funciones específicas para trabajar con la distribución geométrica.
+
+La función en R para la distribución geométrica es dgeom(), y se utiliza para calcular la función de masa de probabilidad (PMF). Además, puedes usar pgeom() para calcular la función de distribución acumulativa (CDF), rgeom() para generar números aleatorios que sigan una distribución geométrica y qgeom() para obtener los cuantiles.
+
+Por ejemplo.
+
+Supongamos que queremos modelar la probabilidad de que se necesiten exactamente 4 ensayos para obtener el primer éxito, y la probabilidad de éxito en cada ensayo es 0.3. Aquí está cómo lo haríamos en R Studio:
+
+```{r}
+# Parámetros de la distribución geométrica
+prob_exito <- 0.3  # Probabilidad de éxito en cada ensayo
+num_ensayos <- 4   # Número de ensayos para obtener el primer éxito
+
+# PMF: Probabilidad de necesitar num_ensayos para obtener el primer éxito
+probabilidad <- dgeom(num_ensayos, prob = prob_exito)
+
+# CDF: Probabilidad acumulativa de necesitar hasta num_ensayos para obtener el primer éxito
+prob_acumulativa <- pgeom(num_ensayos, prob = prob_exito)
+
+# Generar números aleatorios que sigan una distribución geométrica
+num_aleatorios <- rgeom(n = 5, prob = prob_exito)
+
+# Calcular cuantiles de la distribución geométrica
+cuantil_95 <- qgeom(0.95, prob = prob_exito)
+
+# Imprimir resultados
+cat("Probabilidad de necesitar", num_ensayos, "ensayos:", probabilidad, "\n")
+cat("Probabilidad acumulativa hasta", num_ensayos, "ensayos:", prob_acumulativa, "\n")
+cat("Números aleatorios generados:", num_aleatorios, "\n")
+cat("Cuantil al 95%:", cuantil_95, "\n")
+
+```
+
+## Distribución Uniforme discreta.
+
+La distribución uniforme discreta modela la probabilidad de que un evento pueda tomar cualquiera de los valores enteros igualmente probables dentro de un rango determinado. En otras palabras, todos los posibles resultados tienen la misma probabilidad de ocurrir. En R Studio, se puede trabajar con la distribución uniforme discreta utilizando funciones específicas. 
+
+En R, la función para la distribución uniforme discreta es dunif(), y se utiliza para calcular la función de masa de probabilidad (PMF). Además, puedes usar punif() para calcular la función de distribución acumulativa (CDF), runif() para generar números aleatorios que sigan una distribución uniforme discreta y qunif() para obtener los cuantiles.
+
+por ejemplo: 
+
+Supongamos que queremos modelar la probabilidad de obtener un número entre 1 y 6 en el lanzamiento de un dado justo. Aquí está cómo lo haríamos en R Studio:
+
+```{r}
+# Parámetros de la distribución uniforme discreta
+rango_inferior <- 1  # Valor mínimo del rango
+rango_superior <- 6  # Valor máximo del rango
+
+# PMF: Probabilidad de obtener un valor específico dentro del rango
+probabilidad <- dunif(3, min = rango_inferior, max = rango_superior)
+
+# CDF: Probabilidad acumulativa de obtener un valor menor o igual a 3
+prob_acumulativa <- punif(3, min = rango_inferior, max = rango_superior)
+
+# Generar números aleatorios que sigan una distribución uniforme discreta
+num_aleatorio <- runif(1, min = rango_inferior, max = rango_superior)
+
+# Calcular cuantiles de la distribución uniforme discreta
+cuantil_95 <- qunif(0.95, min = rango_inferior, max = rango_superior)
+
+# Imprimir resultados
+cat("Probabilidad de obtener el valor 3:", probabilidad, "\n")
+cat("Probabilidad acumulativa hasta el valor 3:", prob_acumulativa, "\n")
+cat("Número aleatorio generado:", num_aleatorio, "\n")
+cat("Cuantil al 95%:", cuantil_95, "\n")
+
+```
+
+## Distribución Hipergeométrica.
+
+La distribución hipergeométrica modela la probabilidad de obtener un número específico de éxitos en una muestra sin reemplazo de una población finita que contiene un número conocido de éxitos y fracasos.
+
+En R, la función para la distribución hipergeométrica es dhyper(), y se utiliza para calcular la función de masa de probabilidad (PMF). Además, puedes usar phyper() para calcular la función de distribución acumulativa (CDF), rhyper() para generar números aleatorios que sigan una distribución hipergeométrica y qhyper() para obtener los cuantiles.
+
+Ejemplo:
+
+Supongamos que tienes una urna con 10 bolas, de las cuales 5 son rojas y 5 son azules. Queremos calcular la probabilidad de obtener exactamente 3 bolas rojas al seleccionar al azar 5 bolas sin reemplazo. Aquí está cómo lo haríamos en R Studio:
+
+```{r}
+# Parámetros de la distribución hipergeométrica
+poblacion_total <- 10  # Número total de bolas en la urna
+num_rojas <- 5         # Número total de bolas rojas
+tam_muestra <- 5       # Tamaño de la muestra que se selecciona
+
+# PMF: Probabilidad de obtener exactamente 3 bolas rojas en la muestra
+probabilidad <- dhyper(3, m = num_rojas, n = poblacion_total - num_rojas, k = tam_muestra)
+
+# CDF: Probabilidad acumulativa de obtener hasta 3 bolas rojas en la muestra
+prob_acumulativa <- phyper(3, m = num_rojas, n = poblacion_total - num_rojas, k = tam_muestra)
+
+# Generar números aleatorios que sigan una distribución hipergeométrica
+num_aleatorio <- rhyper(1, m = num_rojas, n = poblacion_total - num_rojas, k = tam_muestra)
+
+# Calcular cuantiles de la distribución hipergeométrica
+cuantil_95 <- qhyper(0.95, m = num_rojas, n = poblacion_total - num_rojas, k = tam_muestra)
+
+# Imprimir resultados
+cat("Probabilidad de obtener exactamente 3 bolas rojas:", probabilidad, "\n")
+cat("Probabilidad acumulativa hasta 3 bolas rojas:", prob_acumulativa, "\n")
+cat("Número aleatorio generado:", num_aleatorio, "\n")
+cat("Cuantil al 95%:", cuantil_95, "\n")
+
+```
+
+
+
+
+
+## Distribuciones continuas
+
+En probabilidad los datos pueden ser continuos y discretos, cuando son discretos los modelamos mediante distribuciones discretas mientras si los datos tienen un continuo de valores, entonces se tienen que modelar mediante distribuciones de probabilidad continuas. Un ejemplo clásico de distribución continua es la distribución normal o Gaussiana. Las distribuciones continuas igual se representan mediante ecuaciones y en esto caso pueden ser representados por funciones llamadas PDFs o CDFs. A continuación definimos algunas de ellas.
+
+### Distribución Gaussiana o normal
+
+Se dice que los datos son Gaussianos cuando éstos vinieron de una distribución Gaussiana, la cual tiene la siguiente forma:
+
+$$
+f(x) = \frac{1}{\sqrt{2\pi \sigma^2}}\mbox{e}^{\frac{-(x-\mu)^2}{2\sigma^2}}
+$$
+
+En `R` esta distribución de puede simular como:
+
+```{r}
+datos <- rnorm(100,mean=0, sd=1)
+plot(datos, type="l", main="Datos Gaussianos")
+```
+Existen muchas otras distribuciones continuas y el objetivo de ellas es adecuar nuestros datos a una de ellas con el objetivo de simular situaciones con valores tomados de ellas.
+
+
+### Tarea
+
+Investigar las siguientes distribuciones continuas de probabilidad (pueden incorporar el código en `R` que las genera aunque es opcional).
+
+## Distribución uniforme continua.
+
+La distribución uniforme continua modela la probabilidad de que una variable aleatoria tome cualquier valor dentro de un intervalo específico con igual probabilidad. La función en R para la distribución uniforme continua es dunif(), y se utiliza para calcular la función de densidad de probabilidad (PDF). Además, puedes usar punif() para calcular la función de distribución acumulativa (CDF), runif() para generar números aleatorios que sigan una distribución uniforme continua y qunif() para obtener los cuantiles.
+
+Por ejemplo:
+
+Supongamos que queremos modelar la probabilidad de que una variable aleatoria se encuentre en el intervalo [2, 5], que es un rango específico. Aquí está cómo lo haríamos en R Studio:
+
+```{r}
+# Parámetros de la distribución uniforme continua
+rango_inferior <- 2  # Valor mínimo del intervalo
+rango_superior <- 5  # Valor máximo del intervalo
+
+# PDF: Probabilidad de que la variable aleatoria esté en el intervalo [2, 5]
+probabilidad <- dunif(3, min = rango_inferior, max = rango_superior)
+
+# CDF: Probabilidad acumulativa de que la variable aleatoria sea menor o igual a 3
+prob_acumulativa <- punif(3, min = rango_inferior, max = rango_superior)
+
+# Generar números aleatorios que sigan una distribución uniforme continua
+num_aleatorio <- runif(1, min = rango_inferior, max = rango_superior)
+
+# Calcular cuantiles de la distribución uniforme continua
+cuantil_95 <- qunif(0.95, min = rango_inferior, max = rango_superior)
+
+# Imprimir resultados
+cat("Probabilidad de que la variable aleatoria esté en el intervalo [2, 5]:", probabilidad, "\n")
+cat("Probabilidad acumulativa hasta 3:", prob_acumulativa, "\n")
+cat("Número aleatorio generado:", num_aleatorio, "\n")
+cat("Cuantil al 95%:", cuantil_95, "\n")
+
+```
+
+## Distribución exponencial.
+
+
+La distribución exponencial modela el tiempo entre eventos en un proceso de Poisson, donde los eventos ocurren de manera continua e independiente a una tasa constante. La distribución exponencial tiene un parámetro λ (lambda), que es la tasa de ocurrencia de eventos por unidad de tiempo. 
+En R, la función para la distribución exponencial es dexp(), y se utiliza para calcular la función de densidad de probabilidad (PDF). Además, puedes usar pexp() para calcular la función de distribución acumulativa (CDF), rexp() para generar números aleatorios que sigan una distribución exponencial y qexp() para obtener los cuantiles.
+
+por ejemplo:
+
+upongamos que queremos modelar el tiempo hasta que ocurra un evento, y la tasa de ocurrencia de eventos es de 0.5 eventos por unidad de tiempo. Aquí está cómo lo haríamos en R Studio:
+
+```{r}
+# Parámetros de la distribución exponencial
+tasa_ocurrencia <- 0.5  # Tasa de ocurrencia de eventos por unidad de tiempo
+
+# PDF: Probabilidad de que el tiempo hasta el evento sea igual a 2 unidades de tiempo
+probabilidad <- dexp(2, rate = tasa_ocurrencia)
+
+# CDF: Probabilidad acumulativa de que el tiempo hasta el evento sea menor o igual a 2 unidades de tiempo
+prob_acumulativa <- pexp(2, rate = tasa_ocurrencia)
+
+# Generar números aleatorios que sigan una distribución exponencial
+num_aleatorio <- rexp(1, rate = tasa_ocurrencia)
+
+# Calcular cuantiles de la distribución exponencial
+cuantil_95 <- qexp(0.95, rate = tasa_ocurrencia)
+
+# Imprimir resultados
+cat("Probabilidad de que el tiempo hasta el evento sea igual a 2 unidades de tiempo:", probabilidad, "\n")
+cat("Probabilidad acumulativa hasta 2 unidades de tiempo:", prob_acumulativa, "\n")
+cat("Número aleatorio generado:", num_aleatorio, "\n")
+cat("Cuantil al 95%:", cuantil_95, "\n")
+
+```
+
+## Distribución Rayleigh
+
+La distribución Rayleigh es una distribución continua que se utiliza comúnmente para modelar la magnitud de la componente horizontal de la velocidad del viento o para describir la distribución de la amplitud de una onda electromagnética en comunicaciones inalámbricas. En R Studio, puedes trabajar con la distribución Rayleigh utilizando funciones específicas.
+
+En R, la función para la distribución Rayleigh es drayleigh(), y se utiliza para calcular la función de densidad de probabilidad (PDF). Además, puedes usar prayleigh() para calcular la función de distribución acumulativa (CDF), qrayleigh() para obtener cuantiles y rrayleigh() para generar números aleatorios que sigan una distribución Rayleigh.
+
+Por ejemplo:
+
+
+La distribución Rayleigh es una distribución continua que se utiliza comúnmente para modelar la magnitud de la componente horizontal de la velocidad del viento o para describir la distribución de la amplitud de una onda electromagnética en comunicaciones inalámbricas. En R Studio, puedes trabajar con la distribución Rayleigh utilizando funciones específicas. Aquí tienes un resumen y un ejemplo:
+
+Resumen:
+En R, la función para la distribución Rayleigh es drayleigh(), y se utiliza para calcular la función de densidad de probabilidad (PDF). Además, puedes usar prayleigh() para calcular la función de distribución acumulativa (CDF), qrayleigh() para obtener cuantiles y rrayleigh() para generar números aleatorios que sigan una distribución Rayleigh.
+
+Ejemplo:
+Supongamos que queremos modelar la probabilidad de que la velocidad del viento tenga una magnitud específica, y que la velocidad del viento sigue una distribución Rayleigh con parámetro de escala *scale = 2*. Este es un ejemplo de como se realiza en R studio.
+
+## Distribución Gamma.
+
+La distribución gamma es una familia de distribuciones de probabilidad continuas que generaliza varias otras distribuciones, como la distribución exponencial, la distribución chi-cuadrado y la distribución Erlang. La distribución gamma se utiliza en diversos campos, incluyendo estadísticas, física, biología y finanzas. 
+
+En R, la función para la distribución gamma es dgamma(), y se utiliza para calcular la función de densidad de probabilidad (PDF). Además, puedes usar pgamma() para calcular la función de distribución acumulativa (CDF), rgamma() para generar números aleatorios que sigan una distribución gamma y qgamma() para obtener cuantiles.
+
+Por ejemplo:
+
+Supongamos que queremos modelar el tiempo que tarda un proceso en completarse, y que este tiempo sigue una distribución gamma con parámetros de forma **(shape)2** y tasa **(rate)0.5**. Aqui esta como lo hariamos en R Studio.
+
+```{r}
+# Parámetros de la distribución gamma
+forma <- 2  # Parámetro de forma (shape) de la distribución gamma
+tasa <- 0.5  # Parámetro de tasa (rate) de la distribución gamma
+
+# PDF: Probabilidad de que el tiempo de completar el proceso sea igual a 3 unidades
+probabilidad <- dgamma(3, shape = forma, rate = tasa)
+
+# CDF: Probabilidad acumulativa de que el tiempo sea menor o igual a 3 unidades
+prob_acumulativa <- pgamma(3, shape = forma, rate = tasa)
+
+# Generar números aleatorios que sigan una distribución gamma
+num_aleatorio <- rgamma(1, shape = forma, rate = tasa)
+
+# Calcular cuantiles de la distribución gamma
+cuantil_95 <- qgamma(0.95, shape = forma, rate = tasa)
+
+# Imprimir resultados
+cat("Probabilidad de que el tiempo de completar el proceso sea igual a 3 unidades:", probabilidad, "\n")
+cat("Probabilidad acumulativa hasta 3 unidades:", prob_acumulativa, "\n")
+cat("Número aleatorio generado:", num_aleatorio, "\n")
+cat("Cuantil al 95%:", cuantil_95, "\n")
+
+```
+
+
+
+
+La tarea se debe entregar el día Miércoles 18 de octubre de 2023.
+Atte. Dr. Julio César Ramírez Pacheco.
